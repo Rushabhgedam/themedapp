@@ -27,7 +27,6 @@ const LoginScreen = ({navigation}: any) => {
 
           <FTextInput
             left={<TextInput.Icon icon="lock" />}
-            
             right={<TextInput.Icon icon={isPasswordVisible ? "eye-off" : "eye"} onPress={() => setIsPasswordVisible(!isPasswordVisible)} />}
             label="Password"
             style={{ fontFamily: fonts.regular }}
