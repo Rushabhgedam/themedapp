@@ -1,4 +1,5 @@
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import HomeScreen from "../screens/dashboard/HomeScreen";
 
 
 
@@ -10,8 +11,8 @@ const UserNavigationScreensList = []
 
 const UserNavigation = () => {
     return (
-        <Stack.Navigator>
-            <Stack.Screen name="user-home" component={() => null} />
+        <Stack.Navigator screenOptions={{ headerShown: false }} initialRouteName="homescreen">
+            <Stack.Screen name="homescreen" component={HomeScreen} />
         </Stack.Navigator>
     )
 }

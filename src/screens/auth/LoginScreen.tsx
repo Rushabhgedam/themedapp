@@ -13,6 +13,7 @@ const LoginScreen = ({navigation}: any) => {
   const theme = useAppTheme();
   const styles = loginStyles(theme);
   const [isPasswordVisible, setIsPasswordVisible] = React.useState(false);
+  const passwordRef = React.useRef<typeof TextInput>(null);
 
   return (
     <ScrollView keyboardShouldPersistTaps={"handled"} style={styles.container}>
@@ -22,10 +23,14 @@ const LoginScreen = ({navigation}: any) => {
           left={<TextInput.Icon icon="email" />}
           label="Username or Email"
           mode='outlined'
+          keyboardType='email-address'
+          returnKeyLabel='next'
+          onSubmitEditing={()=> passwordRef.current?.focus()}
         />
         <View style={{ gap: 5 }}>
 
           <FTextInput
+            ref={passwordRef}
             left={<TextInput.Icon icon="lock" />}
             right={<TextInput.Icon icon={isPasswordVisible ? "eye-off" : "eye"} onPress={() => setIsPasswordVisible(!isPasswordVisible)} />}
             label="Password"
@@ -51,7 +56,7 @@ const LoginScreen = ({navigation}: any) => {
         </View>
         <FText>Create An Account <FText variant='bold' style={[styles.primaryText, styles.textUnderline]} onPress={()=> navigation.navigate('register')}>Sign Up</FText></FText>
         <FText style={styles.centerTxt}>- OR -</FText>
-        <Button style={[styles.btn]}>
+        <Button onPress={()=> navigation.replace("userstack")} style={[styles.btn]}>
           <FText>Continue as Guest</FText>
         </Button>
       </View>

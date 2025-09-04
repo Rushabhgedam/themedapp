@@ -1,6 +1,6 @@
 import { StyleSheet, Text, View } from 'react-native'
 import React from 'react'
-import { ScreenProps } from '@/types/navigation'
+import { ScreenProps } from '../../types/navigation'
 
 const HomeScreen: React.FC<ScreenProps> = () => {
   return (
