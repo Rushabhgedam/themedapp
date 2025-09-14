@@ -13,31 +13,90 @@ const LoginScreen = ({navigation}: any) => {
   const theme = useAppTheme();
   const styles = loginStyles(theme);
   const [isPasswordVisible, setIsPasswordVisible] = React.useState(false);
-  const passwordRef = React.useRef<typeof TextInput>(null);
+  const [email, setEmail] = React.useState('');
+  const [password, setPassword] = React.useState('');
+  const [emailError, setEmailError] = React.useState('');
+  const [passwordError, setPasswordError] = React.useState('');
+  
+  const emailRef = React.useRef<any>(null);
+  const passwordRef = React.useRef<any>(null);
+
+  // Email validation regex
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  
+  // Password validation regex (alphanumeric, 8+ characters)
+  const passwordRegex = /^(?=.*[a-zA-Z])(?=.*\d)[a-zA-Z\d]{8,}$/;
+
+  const validateEmail = (email: string) => {
+    if (!email) {
+      setEmailError('');
+      return false;
+    }
+    if (!emailRegex.test(email)) {
+      setEmailError('Please enter a valid email address');
+      return false;
+    }
+    setEmailError('');
+    return true;
+  };
+
+  const validatePassword = (password: string) => {
+    if (!password) {
+      setPasswordError('');
+      return false;
+    }
+    if (!passwordRegex.test(password)) {
+      setPasswordError('Password must be alphanumeric and at least 8 characters long');
+      return false;
+    }
+    setPasswordError('');
+    return true;
+  };
+
+  const handleEmailChange = (text: string) => {
+    setEmail(text);
+    validateEmail(text);
+  };
+
+  const handlePasswordChange = (text: string) => {
+    setPassword(text);
+    validatePassword(text);
+  };
 
   return (
     <ScrollView keyboardShouldPersistTaps={"handled"} style={styles.container}>
       <View style={{ gap: 10 }}>
         <FText variant='bold' style={styles.titleText}>Welcome Back</FText>
         <FTextInput
+          ref={emailRef}
           left={<TextInput.Icon icon="email" />}
           label="Username or Email"
           mode='outlined'
           keyboardType='email-address'
-          returnKeyLabel='next'
-          onSubmitEditing={()=> passwordRef.current?.focus()}
+          returnKeyType='next'
+          value={email}
+          onChangeText={handleEmailChange}
+          onSubmitEditing={() => passwordRef.current?.focus()}
+          error={!!emailError}
         />
         <View style={{ gap: 5 }}>
-
           <FTextInput
             ref={passwordRef}
             left={<TextInput.Icon icon="lock" />}
             right={<TextInput.Icon icon={isPasswordVisible ? "eye-off" : "eye"} onPress={() => setIsPasswordVisible(!isPasswordVisible)} />}
             label="Password"
             style={{ fontFamily: fonts.regular }}
-            secureTextEntry={isPasswordVisible}
+            secureTextEntry={!isPasswordVisible}
             mode='outlined'
+            value={password}
+            onChangeText={handlePasswordChange}
+            error={!!passwordError}
           />
+          {passwordError ? (
+            <FText style={{ color: theme.colors.error, fontSize: 12, marginTop: 4 }}>
+              {passwordError}
+            </FText>
+          ) : null}
           <FText onPress={()=> navigation.navigate("forget-password")} style={styles.secondaryText}>Forgot Password ?</FText>
         </View>
         <Button style={styles.btn} mode='contained'>

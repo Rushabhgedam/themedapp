@@ -9,14 +9,15 @@ type FTextInputProps = TextInputProps & {
   style?: TextStyle | TextStyle[];
 };
 
-const FTextInput: React.FC<FTextInputProps> = ({
+const FTextInput = React.forwardRef<any, FTextInputProps>(({
   fontSize = 16,
   variant = 'regular',
   style,
   ...rest
-}) => {
+}, ref) => {
   return (
     <TextInput
+      ref={ref}
       style={[
         {
           fontFamily: fonts[variant],
@@ -27,6 +28,8 @@ const FTextInput: React.FC<FTextInputProps> = ({
       {...rest}
     />
   );
-};
+});
+
+FTextInput.displayName = 'FTextInput';
 
 export default FTextInput;
